@@ -2,11 +2,14 @@ package what.the.rxkotlin.android.dotolist
 
 import android.content.Context
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.jakewharton.rxbinding4.view.clicks
+import io.reactivex.rxjava3.kotlin.subscribeBy
+import io.reactivex.rxjava3.subjects.Subject
 import what.the.rxkotlin.android.data.DataItem
 import what.the.rxkotlin.android.databinding.ItemTodoBinding
-import java.util.ArrayList
 
 
 /**
@@ -18,10 +21,12 @@ class ToDoAdapter(
     // 이 인스턴스는 onCreateViewHolder 메서드 내부의 레이아웃을 확장하는데 사용
     private val context: Context,
     // val 매개변수로 람다를 사용. 이 람다는 DataItem의 인스턴스를 매개변수로 입력받고 Unit을 반환
-    val onItemClick: (DataItem?) -> Unit = {}
+//    val onItemClick: (DataItem?) -> Unit = {}
+    val onClickTodoSubject: Subject<Pair<View, DataItem>>
 ) : RecyclerView.Adapter<ToDoAdapter.TodoViewHolder>() {
 
     private val inflater = LayoutInflater.from(context)
+
     // onBindViewHodler 함수 내부에서 이를 ViewHolder 인스턴스로 전달
     private val todoList = arrayListOf<DataItem>()
 
@@ -55,10 +60,22 @@ class ToDoAdapter(
                 binding.txtStatus.text = item.lastName.toString()
                 binding.txtDate.text = item.email.toString()
 
-                // 아이템을 클릭할 때마다 onItemClick 람다가 호출. 이는 TodoListActivity에서 전달된다.
-                setOnClickListener {
-                    this@ToDoAdapter.onItemClick(item)
-                }
+                /*
+                아이템을 클릭할 때마다 onItemClick 람다가 호출. 이는 TodoListActivity에서 전달된다.
+                생성자에 Subject 인스턴스
+                itemView를 클릭하면 Subject의 onNext 이벤트를 호출
+                Pair를 사용해 itemView와 item 인스턴스를 전달
+                setOnClickListener(콜백) --> itemView.clicks(리액티브)
+                 */
+                itemView.clicks()
+                    .subscribeBy {
+                        onClickTodoSubject.onNext(Pair(itemView, item))
+                    }
+
+//                setOnClickListener {
+////                    this@ToDoAdapter.onItemClick(item)
+//                    onClickTodoSubject.onNext(Pair(itemView, item))
+//                }
             }
         }
     }
