@@ -1,5 +1,6 @@
 package what.the.rxkotlin.android.dotolist
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
@@ -49,8 +50,8 @@ class TodoListActivity : BaseActivity() {
      * 데이터가 할당하기 전에 오류 코드를 확인하도록 설계해야 하지만 지금도 잘 동작은 함
      */
     private fun fetchTodoList() {
-        ApiClient().getApiService()
-            .getUsers()
+        ApiClient()
+            .getApiService().getUsers()
             .subscribeOn(Schedulers.computation())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy(
