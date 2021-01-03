@@ -1,6 +1,6 @@
-package what.the.rxkotlin.android.data
+package what.the.rxkotlin.android.apis.response
 
-import what.the.rxkotlin.android.apis.response.BaseApiResponse
+import what.the.rxkotlin.android.data.DataItem
 
 open class ListUsersResponse(
     val perPage: Int? = null,

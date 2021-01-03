@@ -4,7 +4,7 @@ import com.rivuchk.todoapplication.utils.Constants
 
 import retrofit2.http.GET
 import retrofit2.Call
-import what.the.rxkotlin.android.data.ListUsersResponse
+import what.the.rxkotlin.android.apis.response.ListUsersResponse
 
 /**
  * Created by jongkook on 2021.01.04
