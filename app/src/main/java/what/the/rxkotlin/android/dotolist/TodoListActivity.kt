@@ -1,14 +1,16 @@
 package what.the.rxkotlin.android.dotolist
 
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.Toast
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.kotlin.subscribeBy
 import io.reactivex.rxjava3.schedulers.Schedulers
+import io.reactivex.rxjava3.subjects.PublishSubject
 import what.the.rxkotlin.android.BaseActivity
 import what.the.rxkotlin.android.apis.ApiClient
+import what.the.rxkotlin.android.data.DataItem
 import what.the.rxkotlin.android.databinding.ActivityTodoListBinding
 
 class TodoListActivity : BaseActivity() {
@@ -32,13 +34,22 @@ class TodoListActivity : BaseActivity() {
 //            startActivityForResult(intent, INTENT_ADD_TODO)
         }
 
-        adapter = ToDoAdapter(this) {
-            // adapter 인스턴스를 생성하는 동안 람다를 전달
-            // 이 람다는 rvToDoList의 항목을 클릭할 때마다 호출
+        val onClickTodoSubject = PublishSubject.create<Pair<View, DataItem>>()
+        onClickTodoSubject.filter {
+            it != null
+        }.subscribeBy {
 //            val intent = Intent(this, TodoDetailsActivity)
 //            startActivityForResult(intent, INTENT_EDIT_TODO)
         }
 
+//        adapter = ToDoAdapter(this) {
+//            // adapter 인스턴스를 생성하는 동안 람다를 전달
+//            // 이 람다는 rvToDoList의 항목을 클릭할 때마다 호출
+//            val intent = Intent(this, TodoDetailsActivity)
+//            startActivityForResult(intent, INTENT_EDIT_TODO)
+//        }
+
+        adapter = ToDoAdapter(this, onClickTodoSubject)
         binding.rvToDoList.adapter = adapter
 
         // REST api에서 Todos 목록을 가져온다.
@@ -65,6 +76,10 @@ class TodoListActivity : BaseActivity() {
                 },
                 onError = {
                     it.printStackTrace()
+                },
+                onComplete = {
+                    Log.i(this.localClassName, "* * * * Complete * * * *")
+                    Toast.makeText(this, "정상적으로 데이터를 가지고 왔습니다.", Toast.LENGTH_SHORT).show()
                 }
             )
     }
