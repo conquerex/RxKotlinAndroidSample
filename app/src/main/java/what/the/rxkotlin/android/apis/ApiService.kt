@@ -1,9 +1,9 @@
 package what.the.rxkotlin.android.apis
 
 import com.rivuchk.todoapplication.utils.Constants
+import io.reactivex.rxjava3.core.Observable
 
 import retrofit2.http.GET
-import retrofit2.Call
 import what.the.rxkotlin.android.apis.response.ListUsersResponse
 
 /**
@@ -11,7 +11,7 @@ import what.the.rxkotlin.android.apis.response.ListUsersResponse
  */
 interface ApiService {
     @GET(Constants.GET_USERS)
-    fun getUsers(): Call<ListUsersResponse>
+    fun getUsers(): Observable<ListUsersResponse>
 
 //    @POST(Constants.CREATE)
 //    fun create

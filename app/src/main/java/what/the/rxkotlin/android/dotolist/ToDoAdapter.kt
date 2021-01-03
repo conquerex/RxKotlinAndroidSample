@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import what.the.rxkotlin.android.data.DataItem
 import what.the.rxkotlin.android.databinding.ItemTodoBinding
+import java.util.ArrayList
 
 
 /**
