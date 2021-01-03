@@ -1,4 +1,4 @@
-package what.the.rxkotlin.android.dotolist
+package what.the.rxkotlin.android.list
 
 import android.os.Bundle
 import android.util.Log
@@ -11,56 +11,57 @@ import io.reactivex.rxjava3.subjects.PublishSubject
 import what.the.rxkotlin.android.BaseActivity
 import what.the.rxkotlin.android.apis.ApiClient
 import what.the.rxkotlin.android.data.DataItem
-import what.the.rxkotlin.android.databinding.ActivityTodoListBinding
+import what.the.rxkotlin.android.databinding.ActivityUserListBinding
 
-class TodoListActivity : BaseActivity() {
 
-    // ToDoAdapter 인스턴스를 만들어 rvToDoList의 어댑터로 설정
-    lateinit var adapter: ToDoAdapter
+class UserListActivity : BaseActivity() {
+
+    // UserListAdapter 인스턴스를 만들어 rvUserList의 어댑터로 설정
+    lateinit var adapter: UserListAdapter
 
     // 액티비티에서 사용할 레이아웃의 뷰 바인딩 클래스
-    private lateinit var binding: ActivityTodoListBinding
+    private lateinit var binding: ActivityUserListBinding
 
-    private val INTENT_EDIT_TODO: Int = 100
-    private val INTENT_ADD_TODO: Int = 101
+    private val INTENT_EDIT_USER: Int = 100
+    private val INTENT_ADD_USER: Int = 101
 
     override fun onCreateBaseActivity(savedInstanceState: Bundle?) {
-        binding = ActivityTodoListBinding.inflate(layoutInflater)
+        binding = ActivityUserListBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setSupportActionBar(binding.toolbar)
 
-        binding.fabAddTodo.setOnClickListener {
-//            val intent = Intent(this, AddTodoActivity)
-//            startActivityForResult(intent, INTENT_ADD_TODO)
+        binding.fabAddUser.setOnClickListener {
+//            val intent = Intent(this, AddUserActivity)
+//            startActivityForResult(intent, INTENT_ADD_USER)
         }
 
-        val onClickTodoSubject = PublishSubject.create<Pair<View, DataItem>>()
-        onClickTodoSubject.filter {
+        val onClickUserSubject = PublishSubject.create<Pair<View, DataItem>>()
+        onClickUserSubject.filter {
             it != null
         }.subscribeBy {
-//            val intent = Intent(this, TodoDetailsActivity)
-//            startActivityForResult(intent, INTENT_EDIT_TODO)
+//            val intent = Intent(this, UserDetailsActivity)
+//            startActivityForResult(intent, INTENT_EDIT_USER)
         }
 
-//        adapter = ToDoAdapter(this) {
+//        adapter = UserListAdapter(this) {
 //            // adapter 인스턴스를 생성하는 동안 람다를 전달
-//            // 이 람다는 rvToDoList의 항목을 클릭할 때마다 호출
-//            val intent = Intent(this, TodoDetailsActivity)
-//            startActivityForResult(intent, INTENT_EDIT_TODO)
+//            // 이 람다는 rvUserList의 항목을 클릭할 때마다 호출
+//            val intent = Intent(this, UserDetailsActivity)
+//            startActivityForResult(intent, INTENT_EDIT_USER)
 //        }
 
-        adapter = ToDoAdapter(this, onClickTodoSubject)
-        binding.rvToDoList.adapter = adapter
+        adapter = UserListAdapter(this, onClickUserSubject)
+        binding.rvUserList.adapter = adapter
 
-        // REST api에서 Todos 목록을 가져온다.
-        fetchTodoList()
+        // REST api에서 Users 목록을 가져온다.
+        fetchUserList()
     }
 
     /**
      * api의 옵저버블을 구독하고 데이터가 도착하면 어댑터에 데이터를 할당
      * 데이터가 할당하기 전에 오류 코드를 확인하도록 설계해야 하지만 지금도 잘 동작은 함
      */
-    private fun fetchTodoList() {
+    private fun fetchUserList() {
         ApiClient()
             .getApiService().getUsers()
             .subscribeOn(Schedulers.computation())

@@ -1,7 +1,7 @@
-package com.rivuchk.todoapplication.utils
+package what.the.rxkotlin.android.util
 
 /**
- * Created by Rivu on 29-10-2017.
+ * Created by jongkook on 2021.01.04
  */
 object Constants {
     const val BASE_URL = "https://reqres.in/api/"

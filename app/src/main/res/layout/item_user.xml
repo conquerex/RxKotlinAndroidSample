@@ -15,13 +15,13 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/txtID"
+            android:id="@+id/txt_id"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:textAppearanceLarge" />
 
         <TextView
-            android:id="@+id/txtDesc"
+            android:id="@+id/txt_first_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ellipsize="end"
@@ -29,14 +29,14 @@
             android:textAppearance="?android:textAppearanceMedium" />
 
         <TextView
-            android:id="@+id/txtStatus"
+            android:id="@+id/txt_last_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:textAppearanceMedium"
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/txtDate"
+            android:id="@+id/txt_email"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:textAppearanceMedium" />
