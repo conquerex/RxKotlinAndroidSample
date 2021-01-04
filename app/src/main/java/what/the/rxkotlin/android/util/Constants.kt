@@ -7,6 +7,7 @@ object Constants {
     const val BASE_URL = "https://reqres.in/api/"
     const val GET_USERS = "users"
     const val UPDATE = "users/{id}"
+    const val CREATE = "users"
 
     const val INTENT_USER_DETAIL = "intent_user_detail"
 

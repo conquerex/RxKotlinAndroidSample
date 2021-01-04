@@ -1,10 +1,7 @@
 package what.the.rxkotlin.android.apis
 
 import io.reactivex.rxjava3.core.Observable
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.PUT
-import retrofit2.http.Path
+import retrofit2.http.*
 import what.the.rxkotlin.android.apis.response.ListUsersResponse
 import what.the.rxkotlin.android.apis.response.UserUpdateResponse
 import what.the.rxkotlin.android.data.UpdateItem
@@ -19,7 +16,11 @@ interface ApiService {
 
     @PUT(Constants.UPDATE)
     fun updateUser(
-//        @Path("id") id: Int, @Body json:String): Observable<UserUpdateResponse>
         @Path("id") id: Int, @Body updateItem: UpdateItem
     ): Observable<UserUpdateResponse>
+
+    @POST(Constants.CREATE)
+    fun createUser(@Body updateItem: UpdateItem
+    ): Observable<UserUpdateResponse>
+
 }

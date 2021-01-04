@@ -6,11 +6,13 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import com.jakewharton.rxbinding4.view.clicks
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.kotlin.subscribeBy
 import io.reactivex.rxjava3.schedulers.Schedulers
 import io.reactivex.rxjava3.subjects.PublishSubject
 import what.the.rxkotlin.android.BaseActivity
+import what.the.rxkotlin.android.add.UserAddActivity
 import what.the.rxkotlin.android.apis.ApiClient
 import what.the.rxkotlin.android.data.DataItem
 import what.the.rxkotlin.android.databinding.ActivityUserListBinding
@@ -31,9 +33,9 @@ class UserListActivity : BaseActivity() {
         setContentView(binding.root)
         setSupportActionBar(binding.toolbar)
 
-        binding.fabAddUser.setOnClickListener {
-//            val intent = Intent(this, AddUserActivity)
-//            startActivityForResult(intent, INTENT_ADD_USER)
+        binding.fabAddUser.clicks().subscribeBy {
+            val intent = Intent(this, UserAddActivity::class.java)
+            startActivityForResult(intent, Constants.CODE_ADD_USER)
         }
 
         val onClickUserSubject = PublishSubject.create<Pair<View, DataItem>>()
@@ -88,7 +90,9 @@ class UserListActivity : BaseActivity() {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if(requestCode == Constants.CODE_GET_USER && resultCode == Activity.RESULT_OK) {
+        if ((requestCode == Constants.CODE_GET_USER || requestCode == Constants.CODE_ADD_USER)
+            && resultCode == Activity.RESULT_OK
+        ) {
             fetchUserList()
         }
     }
