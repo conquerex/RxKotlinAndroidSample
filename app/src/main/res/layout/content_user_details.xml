@@ -21,13 +21,11 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:textAppearanceLarge" />
 
-        <EditText
+        <TextView
             android:id="@+id/txt_detail_first_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
-            android:hint="First Name"
-            android:inputType="none"
             android:textAppearance="?android:textAppearanceMedium" />
 
         <EditText
@@ -36,6 +34,16 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:hint="Last Name"
+            android:inputType="none"
+            android:textAppearance="?android:textAppearanceMedium"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/txt_detail_job"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:hint="Job"
             android:inputType="none"
             android:textAppearance="?android:textAppearanceMedium"
             android:textStyle="bold" />

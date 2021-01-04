@@ -1,5 +1,6 @@
 package what.the.rxkotlin.android.list
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -86,4 +87,9 @@ class UserListActivity : BaseActivity() {
             )
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if(requestCode == Constants.CODE_GET_USER && resultCode == Activity.RESULT_OK) {
+            fetchUserList()
+        }
+    }
 }
