@@ -1,6 +1,7 @@
 package what.the.rxkotlin.android.detail
 
 import android.app.Activity
+import android.app.DatePickerDialog
 import android.os.Bundle
 import android.text.InputType
 import android.util.Log
@@ -17,6 +18,7 @@ import what.the.rxkotlin.android.data.DataItem
 import what.the.rxkotlin.android.data.UpdateItem
 import what.the.rxkotlin.android.databinding.ActivityUserDetailBinding
 import what.the.rxkotlin.android.util.Constants
+import java.util.*
 
 class UserDetailActivity : BaseActivity() {
     private lateinit var binding: ActivityUserDetailBinding
@@ -54,6 +56,26 @@ class UserDetailActivity : BaseActivity() {
         binding.layoutContentUserDetails.txtDetailJob.inputType =
             InputType.TYPE_TEXT_FLAG_CAP_SENTENCES or InputType.TYPE_CLASS_TEXT
 
+        /**
+         * 필요한 기능은 아니지만 Rx를 활용한 클릭 이벤트 실습을 위한 DatePickerDialog 구현
+         */
+        binding.layoutContentUserDetails.txtDetailUpdatedAt
+            .clicks()
+            .subscribeBy {
+                val calendar = Calendar.getInstance()
+                val dp = DatePickerDialog(
+                    this,
+                    { _, year, month, dayOfMonth ->
+                        binding.layoutContentUserDetails.txtDetailUpdatedAt.text =
+                            "$year/${month + 1}/$dayOfMonth"
+                    },
+                    calendar.get(Calendar.YEAR),
+                    calendar.get(Calendar.MONTH),
+                    calendar.get(Calendar.DAY_OF_MONTH)
+                )
+                dp.show()
+            }
+
         binding.layoutContentUserDetails.txtDetailLastName.requestFocus()
 
         binding.fabEditUser.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_save))
@@ -67,7 +89,7 @@ class UserDetailActivity : BaseActivity() {
         val item = UpdateItem()
         item.name = binding.layoutContentUserDetails.txtDetailLastName.text.toString()
         item.job = binding.layoutContentUserDetails.txtDetailJob.text.toString()
-        
+
         ApiClient()
             .getApiService().updateUser(dataItem?.id!!, item)
             .subscribeOn(Schedulers.newThread())
@@ -83,6 +105,7 @@ class UserDetailActivity : BaseActivity() {
                         Updated : ${it.updatedAt}
                         """.trimIndent()
                         Toast.makeText(this, res, Toast.LENGTH_SHORT).show()
+                        binding.layoutContentUserDetails.txtDetailUpdatedAt.text = it.updatedAt
                         setResult(Activity.RESULT_OK)
                     } else {
                         Toast.makeText(
