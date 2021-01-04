@@ -1,5 +1,6 @@
 package what.the.rxkotlin.android.list
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -12,6 +13,8 @@ import what.the.rxkotlin.android.BaseActivity
 import what.the.rxkotlin.android.apis.ApiClient
 import what.the.rxkotlin.android.data.DataItem
 import what.the.rxkotlin.android.databinding.ActivityUserListBinding
+import what.the.rxkotlin.android.detail.UserDetailActivity
+import what.the.rxkotlin.android.util.Constants
 
 
 class UserListActivity : BaseActivity() {
@@ -21,9 +24,6 @@ class UserListActivity : BaseActivity() {
 
     // 액티비티에서 사용할 레이아웃의 뷰 바인딩 클래스
     private lateinit var binding: ActivityUserListBinding
-
-    private val INTENT_EDIT_USER: Int = 100
-    private val INTENT_ADD_USER: Int = 101
 
     override fun onCreateBaseActivity(savedInstanceState: Bundle?) {
         binding = ActivityUserListBinding.inflate(layoutInflater)
@@ -39,8 +39,9 @@ class UserListActivity : BaseActivity() {
         onClickUserSubject.filter {
             it != null
         }.subscribeBy {
-//            val intent = Intent(this, UserDetailsActivity)
-//            startActivityForResult(intent, INTENT_EDIT_USER)
+            val intent = Intent(this, UserDetailActivity::class.java)
+            intent.putExtra(Constants.INTENT_USER_DETAIL, it.second)
+            startActivityForResult(intent, Constants.CODE_GET_USER)
         }
 
 //        adapter = UserListAdapter(this) {
