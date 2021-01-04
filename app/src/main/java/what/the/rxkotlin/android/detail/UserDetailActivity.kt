@@ -99,7 +99,7 @@ class UserDetailActivity : BaseActivity() {
                     if (it != null) {
                         stopEdit()
                         val res = """
-                        Todo successfully saved
+                        User info successfully saved
                         Name    : ${it.name}
                         Job     : ${it.job}
                         Updated : ${it.updatedAt}
@@ -122,7 +122,7 @@ class UserDetailActivity : BaseActivity() {
                         Toast.LENGTH_SHORT
                     ).show()
                     stopEdit()
-                    Log.e(this.localClassName, "* * * " + it.message)
+                    it.printStackTrace()
                 }
             )
     }

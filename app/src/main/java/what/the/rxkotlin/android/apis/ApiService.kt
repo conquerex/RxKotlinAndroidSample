@@ -3,6 +3,7 @@ package what.the.rxkotlin.android.apis
 import io.reactivex.rxjava3.core.Observable
 import retrofit2.http.*
 import what.the.rxkotlin.android.apis.response.ListUsersResponse
+import what.the.rxkotlin.android.apis.response.UserCreateResponse
 import what.the.rxkotlin.android.apis.response.UserUpdateResponse
 import what.the.rxkotlin.android.data.UpdateItem
 import what.the.rxkotlin.android.util.Constants
@@ -21,6 +22,6 @@ interface ApiService {
 
     @POST(Constants.CREATE)
     fun createUser(@Body updateItem: UpdateItem
-    ): Observable<UserUpdateResponse>
+    ): Observable<UserCreateResponse>
 
 }
