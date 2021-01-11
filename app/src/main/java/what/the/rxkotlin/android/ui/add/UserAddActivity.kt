@@ -1,4 +1,4 @@
-package what.the.rxkotlin.android.add
+package what.the.rxkotlin.android.ui.add
 
 import android.app.Activity
 import android.content.Context

@@ -1,4 +1,4 @@
-package what.the.rxkotlin.android.list
+package what.the.rxkotlin.android.ui.list
 
 import android.content.Context
 import android.view.LayoutInflater

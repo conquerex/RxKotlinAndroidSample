@@ -1,10 +1,9 @@
-package what.the.rxkotlin.android.detail
+package what.the.rxkotlin.android.ui.detail
 
 import android.app.Activity
 import android.app.DatePickerDialog
 import android.os.Bundle
 import android.text.InputType
-import android.util.Log
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import com.jakewharton.rxbinding4.view.clicks

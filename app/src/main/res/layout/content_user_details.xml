@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:padding="20dp"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".detail.UserDetailActivity"
+    tools:context=".ui.detail.UserDetailActivity"
     tools:showIn="@layout/activity_user_detail">
 
     <LinearLayout

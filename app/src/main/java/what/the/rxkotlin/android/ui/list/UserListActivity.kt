@@ -1,4 +1,4 @@
-package what.the.rxkotlin.android.list
+package what.the.rxkotlin.android.ui.list
 
 import android.app.Activity
 import android.content.Intent
@@ -12,11 +12,11 @@ import io.reactivex.rxjava3.kotlin.subscribeBy
 import io.reactivex.rxjava3.schedulers.Schedulers
 import io.reactivex.rxjava3.subjects.PublishSubject
 import what.the.rxkotlin.android.BaseActivity
-import what.the.rxkotlin.android.add.UserAddActivity
+import what.the.rxkotlin.android.ui.add.UserAddActivity
 import what.the.rxkotlin.android.apis.ApiClient
 import what.the.rxkotlin.android.data.DataItem
 import what.the.rxkotlin.android.databinding.ActivityUserListBinding
-import what.the.rxkotlin.android.detail.UserDetailActivity
+import what.the.rxkotlin.android.ui.detail.UserDetailActivity
 import what.the.rxkotlin.android.util.Constants
 
 
