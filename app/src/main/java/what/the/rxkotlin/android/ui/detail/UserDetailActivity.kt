@@ -16,11 +16,16 @@ import what.the.rxkotlin.android.apis.ApiClient
 import what.the.rxkotlin.android.data.DataItem
 import what.the.rxkotlin.android.data.UpdateItem
 import what.the.rxkotlin.android.databinding.ActivityUserDetailBinding
+import what.the.rxkotlin.android.repository.RepositoryImpl
 import what.the.rxkotlin.android.util.Constants
 import java.util.*
 
 class UserDetailActivity : BaseActivity() {
     private lateinit var binding: ActivityUserDetailBinding
+
+    private val repository by lazy {
+        RepositoryImpl()
+    }
 
     var dataItem: DataItem? = null
     var isEditing = false
@@ -89,30 +94,18 @@ class UserDetailActivity : BaseActivity() {
         item.name = binding.layoutContentUserDetails.txtDetailLastName.text.toString()
         item.job = binding.layoutContentUserDetails.txtDetailJob.text.toString()
 
-        ApiClient()
-            .getApiService().updateUser(dataItem?.id!!, item)
-            .subscribeOn(Schedulers.newThread())
-            .observeOn(AndroidSchedulers.mainThread())
+        repository.updateUser(dataItem?.id!!, item)
             .subscribeBy(
-                onNext = {
-                    if (it != null) {
-                        stopEdit()
-                        val res = """
+                onSuccess = {
+                    stopEdit()
+                    val res = """
                         User info successfully saved
                         Name    : ${it.name}
                         Job     : ${it.job}
-                        Updated : ${it.updatedAt}
                         """.trimIndent()
-                        Toast.makeText(this, res, Toast.LENGTH_SHORT).show()
-                        binding.layoutContentUserDetails.txtDetailUpdatedAt.text = it.updatedAt
-                        setResult(Activity.RESULT_OK)
-                    } else {
-                        Toast.makeText(
-                            this,
-                            "Couldn't save this info, please try again",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
+                    Toast.makeText(this, res, Toast.LENGTH_SHORT).show()
+                    binding.layoutContentUserDetails.txtDetailUpdatedAt.text = "수정 완료"
+                    setResult(Activity.RESULT_OK)
                 },
                 onError = {
                     Toast.makeText(

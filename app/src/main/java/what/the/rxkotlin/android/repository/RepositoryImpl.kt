@@ -5,6 +5,7 @@ import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.schedulers.Schedulers
 import what.the.rxkotlin.android.apis.ApiClient
 import what.the.rxkotlin.android.data.DataItem
+import what.the.rxkotlin.android.data.UpdateItem
 
 // todo : MVVM 적용시 더욱 명확히 분리할 것!
 class RepositoryImpl : Repository {
@@ -18,6 +19,26 @@ class RepositoryImpl : Repository {
             .subscribeOn(Schedulers.computation())
             .observeOn(AndroidSchedulers.mainThread())
             .map { it.data }
+    }
+
+    override fun updateUser(id: Int, updateItem: UpdateItem): Single<UpdateItem> {
+        return return ApiClient()
+            .getApiService().updateUser(id, updateItem)
+            .subscribeOn(Schedulers.newThread())
+            .observeOn(AndroidSchedulers.mainThread())
+            .map {
+                UpdateItem(it.name, it.job)
+            }
+    }
+
+    override fun createUser(updateItem: UpdateItem): Single<UpdateItem> {
+        return return ApiClient()
+            .getApiService().createUser(updateItem)
+            .subscribeOn(Schedulers.newThread())
+            .observeOn(AndroidSchedulers.mainThread())
+            .map {
+                UpdateItem(it.name, it.job)
+            }
     }
 
 }
