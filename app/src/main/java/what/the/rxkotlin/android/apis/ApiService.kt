@@ -1,6 +1,7 @@
 package what.the.rxkotlin.android.apis
 
 import io.reactivex.rxjava3.core.Observable
+import io.reactivex.rxjava3.core.Single
 import retrofit2.http.*
 import what.the.rxkotlin.android.apis.response.ListUsersResponse
 import what.the.rxkotlin.android.apis.response.UserCreateResponse
@@ -13,7 +14,7 @@ import what.the.rxkotlin.android.util.Constants
  */
 interface ApiService {
     @GET(Constants.GET_USERS)
-    fun getUsers(): Observable<ListUsersResponse>
+    fun getUsers(): Single<ListUsersResponse>
 
     @PUT(Constants.UPDATE)
     fun updateUser(

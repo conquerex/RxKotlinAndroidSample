@@ -23,7 +23,7 @@ class UserAddActivity : BaseActivity() {
         binding = ActivityUserAddBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.txtAddJob.setOnEditorActionListener { v, actionId, event ->
+        binding.txtAddJob.setOnEditorActionListener { _, actionId, _ ->
             var handled = false
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 handled = true
