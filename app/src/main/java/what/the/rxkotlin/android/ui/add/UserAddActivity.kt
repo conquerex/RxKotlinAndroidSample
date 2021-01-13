@@ -8,22 +8,24 @@ import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import com.jakewharton.rxbinding4.view.clicks
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.kotlin.subscribeBy
-import io.reactivex.rxjava3.schedulers.Schedulers
 import what.the.rxkotlin.android.BaseActivity
-import what.the.rxkotlin.android.apis.ApiClient
 import what.the.rxkotlin.android.data.UpdateItem
 import what.the.rxkotlin.android.databinding.ActivityUserAddBinding
+import what.the.rxkotlin.android.repository.RepositoryImpl
 
 class UserAddActivity : BaseActivity() {
     private lateinit var binding: ActivityUserAddBinding
+
+    private val repository by lazy {
+        RepositoryImpl()
+    }
 
     override fun onCreateBaseActivity(savedInstanceState: Bundle?) {
         binding = ActivityUserAddBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.txtAddJob.setOnEditorActionListener { v, actionId, event ->
+        binding.txtAddJob.setOnEditorActionListener { _, actionId, _ ->
             var handled = false
             if (actionId == EditorInfo.IME_ACTION_DONE) {
                 handled = true
@@ -46,29 +48,22 @@ class UserAddActivity : BaseActivity() {
         item.name = binding.txtAddName.text.toString()
         item.job = binding.txtAddJob.text.toString()
 
-        ApiClient()
-            .getApiService().createUser(item)
-            .subscribeOn(Schedulers.newThread())
-            .observeOn(AndroidSchedulers.mainThread())
+        repository.createUser(item)
             .subscribeBy(
-                onNext = {
+                onSuccess = {
                     val res = """
                         User info successfully saved
-                        ID      : ${it.id}
                         Name    : ${it.name}
                         Job     : ${it.job}
-                        Created : ${it.createdAt}
                         """.trimIndent()
                     Toast.makeText(this, res, Toast.LENGTH_SHORT).show()
+                    Log.i(this.localClassName, res)
+                    setResult(Activity.RESULT_OK)
+                    finish()
                 },
                 onError = {
                     it.printStackTrace()
                     Toast.makeText(this, "정상적으로 진행할 수 없습니다.", Toast.LENGTH_SHORT).show()
-                },
-                onComplete = {
-                    Log.i(this.localClassName, "* * * * Complete * * * *")
-                    setResult(Activity.RESULT_OK)
-                    finish()
                 }
             )
     }

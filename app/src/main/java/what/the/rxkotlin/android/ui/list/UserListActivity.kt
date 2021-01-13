@@ -7,15 +7,13 @@ import android.util.Log
 import android.view.View
 import android.widget.Toast
 import com.jakewharton.rxbinding4.view.clicks
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.kotlin.subscribeBy
-import io.reactivex.rxjava3.schedulers.Schedulers
 import io.reactivex.rxjava3.subjects.PublishSubject
 import what.the.rxkotlin.android.BaseActivity
-import what.the.rxkotlin.android.ui.add.UserAddActivity
-import what.the.rxkotlin.android.apis.ApiClient
 import what.the.rxkotlin.android.data.DataItem
 import what.the.rxkotlin.android.databinding.ActivityUserListBinding
+import what.the.rxkotlin.android.repository.RepositoryImpl
+import what.the.rxkotlin.android.ui.add.UserAddActivity
 import what.the.rxkotlin.android.ui.detail.UserDetailActivity
 import what.the.rxkotlin.android.util.Constants
 
@@ -27,6 +25,10 @@ class UserListActivity : BaseActivity() {
 
     // 액티비티에서 사용할 레이아웃의 뷰 바인딩 클래스
     private lateinit var binding: ActivityUserListBinding
+
+    private val repository by lazy {
+        RepositoryImpl()
+    }
 
     override fun onCreateBaseActivity(savedInstanceState: Bundle?) {
         binding = ActivityUserListBinding.inflate(layoutInflater)
@@ -61,35 +63,28 @@ class UserListActivity : BaseActivity() {
         fetchUserList()
     }
 
-    /**
-     * api의 옵저버블을 구독하고 데이터가 도착하면 어댑터에 데이터를 할당
-     * 데이터가 할당하기 전에 오류 코드를 확인하도록 설계해야 하지만 지금도 잘 동작은 함
-     */
     private fun fetchUserList() {
-        ApiClient()
-            .getApiService().getUsers()
-            .subscribeOn(Schedulers.computation())
-            .observeOn(AndroidSchedulers.mainThread())
+        repository.getUsers()
             .subscribeBy(
-                onNext = {
-                    if (it?.data == null) {
+                onSuccess = {
+                    if (it.isEmpty()) {
                         Log.i(this.localClassName, "Data(List users) is null")
                         Toast.makeText(this, "더 이상 불러올 데이터가 없습니다.", Toast.LENGTH_SHORT).show()
                     } else {
-                        adapter.setDataSet(it.data)
+                        adapter.setDataSet(it)
+                        Log.i(this.localClassName, "* * * * Complete * * * *")
+                        Toast.makeText(this, "정상적으로 데이터를 가지고 왔습니다.", Toast.LENGTH_SHORT).show()
                     }
                 },
                 onError = {
                     it.printStackTrace()
-                },
-                onComplete = {
-                    Log.i(this.localClassName, "* * * * Complete * * * *")
-                    Toast.makeText(this, "정상적으로 데이터를 가지고 왔습니다.", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "데이터를 가지고 올 수 없습니다.", Toast.LENGTH_SHORT).show()
                 }
             )
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
         if ((requestCode == Constants.CODE_GET_USER || requestCode == Constants.CODE_ADD_USER)
             && resultCode == Activity.RESULT_OK
         ) {
