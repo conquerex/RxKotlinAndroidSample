@@ -90,6 +90,7 @@ class UserListActivity : BaseActivity() {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
         if ((requestCode == Constants.CODE_GET_USER || requestCode == Constants.CODE_ADD_USER)
             && resultCode == Activity.RESULT_OK
         ) {
