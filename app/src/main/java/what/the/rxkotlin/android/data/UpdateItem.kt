@@ -6,4 +6,8 @@ package what.the.rxkotlin.android.data
 data class UpdateItem(
     var name: String? = null,
     var job: String? = null
-)
+) {
+    override fun toString(): String {
+        return "UpdateItem(name=$name, job=$job)"
+    }
+}
